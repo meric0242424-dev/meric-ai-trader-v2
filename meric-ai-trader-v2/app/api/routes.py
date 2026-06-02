@@ -22,6 +22,10 @@ async def status(user=Depends(get_current_user)):
     except Exception as e:
         binance_balance = 1000.0 if settings.trading_mode != "live" else 0.0
         balance_error = str(e)[:160]
+    try:
+        await scanner.refresh_open_positions()
+    except Exception:
+        pass
     return {
         "binance_balance": binance_balance,
         "balance_error": balance_error,
@@ -30,6 +34,7 @@ async def status(user=Depends(get_current_user)):
         "last_scan": state.last_scan,
         "open_positions": list(state.open_positions.values()),
         "signals": state.signals[:50],
+        "market": state.market[:200],
         "log": state.logs[:120],
         "daily_pnl": state.daily_pnl,
         "daily_trades": state.daily_trades,
@@ -38,6 +43,11 @@ async def status(user=Depends(get_current_user)):
         "win_rate": round((state.daily_wins/(state.daily_wins+state.daily_losses))*100, 1) if (state.daily_wins+state.daily_losses)>0 else 0,
         "config": state.config,
     }
+
+@router.get("/futures-symbols")
+async def futures_symbols(user=Depends(get_current_user)):
+    symbols = await scanner.load_futures_symbols()
+    return {"symbols": symbols, "selected": state.config.get("symbols", [])}
 
 @router.post("/start")
 async def start(user=Depends(get_current_user)):
@@ -59,6 +69,8 @@ class BotConfigIn(BaseModel):
     min_ai_score: int | None = Field(None, ge=1, le=100)
     max_daily_loss_pct: float | None = Field(None, ge=0.1, le=50)
     profit_target_pct: float | None = Field(None, ge=0.1, le=100)
+    tp1_pct: float | None = Field(None, ge=0.1, le=100)
+    tp2_pct: float | None = Field(None, ge=0.1, le=100)
     stop_loss_pct: float | None = Field(None, ge=0.1, le=50)
     scan_interval_sec: int | None = Field(None, ge=5, le=3600)
     per_symbol_delay_sec: float | None = Field(None, ge=0.05, le=10)
@@ -68,9 +80,11 @@ async def update_config(body: BotConfigIn, user=Depends(get_current_user)):
     data = body.model_dump(exclude_none=True)
     if "symbols" in data:
         data["symbols"] = [s.upper().strip() for s in data["symbols"] if s and s.strip()]
+    if "tp1_pct" in data:
+        data["profit_target_pct"] = data["tp1_pct"]
     state.config.update(data)
     scanner.symbols = state.config["symbols"]
-    state.log("Panel ayarları güncellendi", "INFO")
+    state.log(f"Panel ayarları güncellendi | Coin:{len(state.config.get('symbols', []))}", "INFO")
     return {"ok": True, "config": state.config}
 
 class SymbolsIn(BaseModel):
@@ -101,6 +115,7 @@ async def close_position(symbol: str, user=Depends(get_current_user)):
 async def reset_paper(user=Depends(get_current_user)):
     state.open_positions.clear()
     state.signals.clear()
+    state.market.clear()
     state.daily_pnl = 0.0
     state.daily_trades = 0
     state.daily_wins = 0

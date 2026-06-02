@@ -5,82 +5,94 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>MERIC AI TRADER v2 Panel</title>
   <style>
-    :root{--bg:#08111f;--panel:#101b2e;--panel2:#0d1727;--text:#e9f0ff;--muted:#8fa3c7;--green:#19c37d;--red:#ff4d4f;--yellow:#f6c343;--blue:#4da3ff;--border:#23324d}
-    *{box-sizing:border-box} body{margin:0;font-family:Inter,Arial,sans-serif;background:linear-gradient(135deg,#07101d,#0b1830 55%,#07101d);color:var(--text)}
-    .wrap{max-width:1320px;margin:0 auto;padding:22px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}.brand h1{font-size:28px;margin:0}.brand p{margin:5px 0 0;color:var(--muted)}
-    .pill{padding:8px 12px;border:1px solid var(--border);border-radius:999px;background:#0b1424;color:var(--muted);font-size:13px}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}.card{background:rgba(16,27,46,.92);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:0 16px 50px rgba(0,0,0,.25)}
-    .login{max-width:420px;margin:70px auto}.login h2{margin-top:0}.input,select,textarea{width:100%;background:#07111f;color:var(--text);border:1px solid var(--border);border-radius:10px;padding:11px 12px;outline:none} textarea{min-height:110px;resize:vertical}.row{display:flex;gap:10px;align-items:center}.btn{border:0;border-radius:10px;padding:11px 14px;color:#06101e;font-weight:700;cursor:pointer;background:var(--blue)}.btn.green{background:var(--green)}.btn.red{background:var(--red);color:#fff}.btn.yellow{background:var(--yellow)}.btn.ghost{background:#101b2e;color:var(--text);border:1px solid var(--border)}.btn:disabled{opacity:.45;cursor:not-allowed}
-    .stat{grid-column:span 3}.wide{grid-column:span 8}.side{grid-column:span 4}.full{grid-column:1/-1}.label{color:var(--muted);font-size:13px}.value{font-size:26px;font-weight:800;margin-top:6px}.greenTxt{color:var(--green)}.redTxt{color:var(--red)}.yellowTxt{color:var(--yellow)}
-    table{width:100%;border-collapse:collapse} th,td{padding:10px;border-bottom:1px solid var(--border);text-align:left;font-size:13px} th{color:var(--muted);font-weight:600}.log{max-height:310px;overflow:auto}.logitem{padding:9px;border-bottom:1px solid var(--border);font-size:13px}.muted{color:var(--muted)}.hidden{display:none}.badge{font-size:12px;border-radius:999px;padding:4px 8px;border:1px solid var(--border);display:inline-block}.badge.long{color:var(--green)}.badge.short{color:var(--red)}
-    @media(max-width:900px){.stat,.wide,.side{grid-column:1/-1}.top{flex-direction:column;align-items:flex-start}.row{flex-wrap:wrap}}
+    :root{--bg:#06101c;--panel:#0d1a2c;--panel2:#0a1525;--text:#eef5ff;--muted:#8fa3c7;--green:#18d27b;--red:#ff424f;--yellow:#ffc533;--blue:#2587ff;--border:#213653}
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,Arial,sans-serif;background:radial-gradient(circle at top left,#0e2745,#06101c 45%,#030914);color:var(--text)}
+    .nav{height:54px;background:#050d18cc;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 18px;position:sticky;top:0;z-index:10;backdrop-filter:blur(10px)}
+    .brand{display:flex;gap:10px;align-items:center;font-weight:900;font-size:20px}.logo{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#13a7ff,#006aff);display:grid;place-items:center;font-weight:900}.tabs{display:flex;gap:24px;color:#d8e7ff;font-size:14px}.tabs span{cursor:pointer}.tabs .active{color:#40a0ff;border-bottom:2px solid #40a0ff;padding:18px 0}.right{display:flex;gap:12px;align-items:center}.pill{padding:8px 12px;border:1px solid var(--border);border-radius:9px;background:#0b1728;color:var(--muted);font-size:13px}.pill.green{color:var(--green)}
+    .wrap{max-width:1540px;margin:0 auto;padding:16px}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}.card{background:linear-gradient(145deg,rgba(15,30,50,.96),rgba(8,20,36,.96));border:1px solid var(--border);border-radius:10px;padding:16px;box-shadow:0 18px 50px rgba(0,0,0,.25)}
+    .login{max-width:420px;margin:80px auto}.login h2{margin:0 0 10px}.input,select,textarea{width:100%;background:#071322;color:var(--text);border:1px solid var(--border);border-radius:7px;padding:10px 11px;outline:none} textarea{min-height:110px;resize:vertical}.row{display:flex;gap:9px;align-items:center}.btn{border:0;border-radius:7px;padding:10px 13px;color:#06101e;font-weight:800;cursor:pointer;background:var(--blue)}.btn.green{background:var(--green)}.btn.red{background:var(--red);color:#fff}.btn.yellow{background:var(--yellow)}.btn.ghost{background:#0c1a2d;color:var(--text);border:1px solid var(--border)}.btn.small{font-size:12px;padding:7px 10px}.btn:disabled{opacity:.45;cursor:not-allowed}
+    .stat{grid-column:span 2}.stat.big{grid-column:span 2}.wide{grid-column:span 7}.side{grid-column:span 5}.leftcol{grid-column:span 2}.maincol{grid-column:span 10}.full{grid-column:1/-1}.label{color:var(--muted);font-size:13px}.value{font-size:24px;font-weight:900;margin-top:7px}.greenTxt{color:var(--green)}.redTxt{color:var(--red)}.yellowTxt{color:var(--yellow)}.blueTxt{color:var(--blue)}
+    .range{width:100%;accent-color:var(--blue)}.minirow{display:flex;justify-content:space-between;color:#9db2d6;font-size:12px;margin-top:6px}.sub{border-top:1px solid var(--border);margin-top:12px;padding-top:10px;display:flex;gap:25px}.sub div{font-size:13px}
+    table{width:100%;border-collapse:collapse} th,td{padding:10px 8px;border-bottom:1px solid var(--border);text-align:left;font-size:14px;white-space:nowrap} th{color:#a9bce0;font-weight:700}.tableWrap{overflow:auto}.log{max-height:390px;overflow:auto}.logitem{padding:10px;border-bottom:1px solid var(--border);font-size:13px}.muted{color:var(--muted)}.hidden{display:none}.badge{font-size:12px;border-radius:999px;padding:4px 9px;border:1px solid var(--border);display:inline-block}.badge.long{color:var(--green);background:#06351f}.badge.short{color:var(--red);background:#351017}.badge.neutral{color:#c2cce0;background:#111c2d}
+    .coinPanel{height:746px;display:flex;flex-direction:column}.coinList{overflow:auto;margin-top:10px;padding-right:4px}.coinItem{display:flex;align-items:center;justify-content:space-between;padding:8px;border-bottom:1px solid #19304d}.coinName{font-weight:800}.coinSub{font-size:11px;color:var(--muted)}.search{margin-top:8px}.switch{position:relative;display:inline-block;width:36px;height:20px}.switch input{display:none}.slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#2a3d59;transition:.2s;border-radius:999px}.slider:before{position:absolute;content:"";height:16px;width:16px;left:2px;top:2px;background:white;transition:.2s;border-radius:50%} .switch input:checked + .slider{background:var(--green)} .switch input:checked + .slider:before{transform:translateX(16px)}.selectFooter{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:12px;color:#cfe0ff;font-size:13px}
+    .quick{display:grid;grid-template-columns:repeat(12,1fr);gap:10px}.quick>*{grid-column:span 12}.half{grid-column:span 6}.dangerNote{font-size:12px;color:#ffbdc3;margin-top:8px}.topline{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}.coinIcon{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#1a2c48;margin-right:6px;font-size:12px}.footer{display:flex;justify-content:space-between;color:#b9c8e6;padding:13px 8px;font-size:13px}
+    @media(max-width:1200px){.stat{grid-column:span 4}.leftcol,.maincol,.wide,.side{grid-column:1/-1}.coinPanel{height:450px}.tabs{display:none}}
+    @media(max-width:760px){.stat{grid-column:1/-1}.nav{height:auto;align-items:flex-start;gap:8px;flex-direction:column;padding:10px}.row{flex-wrap:wrap}.sub{flex-direction:column;gap:5px}}
   </style>
 </head>
 <body>
-<div class="wrap">
-  <div id="loginBox" class="card login">
-    <h2>MERIC AI TRADER v2</h2>
-    <p class="muted">Panel girişi</p>
-    <label class="label">Kullanıcı adı</label><input id="u" class="input" value="meric" autocomplete="username"><br><br>
-    <label class="label">Şifre</label><input id="p" class="input" type="password" autocomplete="current-password"><br><br>
-    <button class="btn green" onclick="login()">Giriş yap</button>
-    <p id="loginErr" class="redTxt"></p>
+<div id="loginBox" class="card login">
+  <h2>MERIC AI TRADER v2</h2><p class="muted">Panel girişi</p>
+  <label class="label">Kullanıcı adı</label><input id="u" class="input" value="meric" autocomplete="username"><br><br>
+  <label class="label">Şifre</label><input id="p" class="input" type="password" autocomplete="current-password"><br><br>
+  <button class="btn green" onclick="login()">Giriş yap</button><p id="loginErr" class="redTxt"></p>
+</div>
+
+<div id="dash" class="hidden">
+  <div class="nav">
+    <div class="brand"><div class="logo">AI</div><span>MERIC AI TRADER v2</span></div>
+    <div class="tabs"><span class="active">Dashboard</span><span>Tüm Coinler</span><span>Açık Pozisyonlar</span><span>Sinyaller</span><span>Strateji</span><span>Ayarlar</span><span>Loglar</span></div>
+    <div class="right"><span id="run" class="pill green">Bot Durumu</span><span class="pill">meric</span><button class="btn ghost small" onclick="logout()">Çıkış</button></div>
   </div>
-
-  <div id="dash" class="hidden">
-    <div class="top">
-      <div class="brand"><h1>MERIC AI TRADER v2</h1><p>Binance Futures AI Bot Paneli</p></div>
-      <div class="row"><span id="mode" class="pill">mode</span><span id="run" class="pill">durum</span><button class="btn ghost" onclick="logout()">Çıkış</button></div>
-    </div>
-
+  <div class="wrap">
     <div class="grid">
-      <div class="card stat"><div class="label">Binance USDT</div><div id="balance" class="value">-</div></div>
-      <div class="card stat"><div class="label">Trade Size</div><div id="tradeSizeTop" class="value">-</div></div>
-      <div class="card stat"><div class="label">Kaldıraç</div><div id="levTop" class="value">-</div></div>
-      <div class="card stat"><div class="label">Günlük PnL</div><div id="pnl" class="value">0</div></div>
-      <div class="card stat"><div class="label">Win Rate</div><div id="winrate" class="value">0%</div></div>
-      <div class="card stat"><div class="label">İşlem Sayısı</div><div id="trades" class="value">0</div></div>
-      <div class="card stat"><div class="label">Son Tarama</div><div id="lastscan" class="value">-</div></div>
-      <div class="card stat"><div class="label">Mod</div><div id="modeCard" class="value">-</div></div>
+      <div class="card stat big"><div class="label">Binance USDT Bakiye</div><div id="balance" class="value greenTxt">-</div><div class="sub"><div><span class="muted">Kullanılabilir</span><br><b id="availableBal">-</b></div><div><span class="muted">Toplam</span><br><b id="totalBal">-</b></div></div></div>
+      <div class="card stat"><div class="label">İşlem Başı USDT</div><div id="tradeSizeTop" class="value">-</div><input id="tradeSizeRange" class="range" type="range" min="10" max="500" step="10" oninput="tradeSize.value=this.value; tradeSizeTop.textContent=this.value+' USDT'"><div class="minirow"><span>10</span><span>50</span><span>100</span><span>250</span><span>500</span></div></div>
+      <div class="card stat"><div class="label">Kaldıraç</div><div id="levTop" class="value">-</div><input id="levRange" class="range" type="range" min="1" max="125" step="1" oninput="lev.value=this.value; levTop.textContent=this.value+'x'"><div class="minirow"><span>1x</span><span>10x</span><span>25x</span><span>50x</span><span>100x</span></div></div>
+      <div class="card stat"><div class="label">TP1 (Take Profit)</div><div id="tpTop" class="value">-</div><input id="tpRange" class="range" type="range" min="0.1" max="10" step="0.1" oninput="tp1.value=this.value; tpTop.textContent=this.value+'%'"><div class="minirow"><span>0.5%</span><span>1%</span><span>2%</span><span>3%</span><span>5%</span></div></div>
+      <div class="card stat"><div class="label">SL (Stop Loss)</div><div id="slTop" class="value">-</div><input id="slRange" class="range" type="range" min="0.1" max="10" step="0.1" oninput="sl.value=this.value; slTop.textContent=this.value+'%'"><div class="minirow"><span>0.5%</span><span>1%</span><span>2%</span><span>3%</span><span>5%</span></div></div>
+      <div class="card stat"><div class="label">Günlük PnL</div><div id="pnl" class="value greenTxt">0</div><p class="muted">Paper/live moduna göre</p></div>
+      <div class="card stat"><div class="label">Win Rate</div><div id="winrate" class="value greenTxt">0%</div><p class="muted"><span id="wl">Kazanan: 0 / Kaybeden: 0</span></p></div>
 
-      <div class="card side">
-        <h3>Kontrol</h3>
-        <div class="row"><button id="startBtn" class="btn green" onclick="startBot()">Botu Başlat</button><button id="stopBtn" class="btn red" onclick="stopBot()">Durdur</button></div>
-        <br><button class="btn yellow" onclick="resetPaper()">Paper Verileri Sıfırla</button>
-        <p class="muted">İlk kullanımda paper modda test et. Canlı emir için Cloud Run env: TRADING_MODE=live olmalı.</p>
+      <div class="card leftcol coinPanel">
+        <h3>İşlem Yapılacak Coinler</h3>
+        <input id="coinSearch" class="input search" placeholder="Coin ara..." oninput="renderCoinList()">
+        <div class="row" style="margin-top:9px"><button class="btn green small" onclick="selectAllCoins()">Hepsini Seç</button><button class="btn red small" onclick="clearAllCoins()">Hepsini Temizle</button></div>
+        <div id="coinList" class="coinList"></div>
+        <div class="selectFooter"><span>Seçili: <b id="selectedCount">0</b> / <span id="allCount">0</span></span><button class="btn small" onclick="saveSelectedCoins()">Seçimleri Kaydet</button></div>
+      </div>
+
+      <div class="card maincol">
+        <div class="topline"><h3>Açık Pozisyonlar</h3><button class="btn ghost small" onclick="refresh()">Yenile</button></div>
+        <div class="tableWrap"><table><thead><tr><th>#</th><th>Coin</th><th>Yön</th><th>Büyüklük</th><th>Entry</th><th>Güncel Fiyat</th><th>SL</th><th>TP1</th><th>TP2</th><th>Margin</th><th>PnL (USDT)</th><th>PnL %</th><th>Saat</th><th>İşlem</th></tr></thead><tbody id="positions"></tbody></table></div>
       </div>
 
       <div class="card wide">
+        <div class="topline"><h3>Tüm Coinler (Futures)</h3><div class="row"><input id="marketSearch" class="input" style="width:220px" placeholder="Coin ara..." oninput="renderMarket()"><button class="btn ghost small" onclick="refresh()">↻</button></div></div>
+        <div class="tableWrap"><table><thead><tr><th>#</th><th>Coin</th><th>Fiyat</th><th>Değişim (24s)</th><th>Hacim</th><th>Sinyal</th><th>AI Skor</th><th>Aktif</th></tr></thead><tbody id="market"></tbody></table></div>
+      </div>
+
+      <div class="card side">
         <h3>Ayarlar</h3>
-        <div class="grid" style="grid-template-columns:repeat(12,1fr)">
-          <div style="grid-column:span 3"><label class="label">Yön</label><select id="direction"><option value="both">LONG + SHORT</option><option value="long">Sadece LONG</option><option value="short">Sadece SHORT</option></select></div>
-          <div style="grid-column:span 3"><label class="label">Kaldıraç</label><input id="lev" class="input" type="number" min="1" max="125"></div>
-          <div style="grid-column:span 3"><label class="label">İşlem Başı USDT</label><input id="tradeSize" class="input" type="number" min="1" step="1"></div>
-          <div style="grid-column:span 3"><label class="label">Min AI Score</label><input id="score" class="input" type="number" min="1" max="100"></div>
-          <div style="grid-column:span 3"><label class="label">Max Açık Poz.</label><input id="maxpos" class="input" type="number" min="1" max="50"></div>
-          <div style="grid-column:span 3"><label class="label">Risk / İşlem %</label><input id="risk" class="input" type="number" step="0.1"></div>
-          <div style="grid-column:span 3"><label class="label">Günlük Max Zarar %</label><input id="maxloss" class="input" type="number" step="0.1"></div>
-          <div style="grid-column:span 3"><label class="label">Kâr Hedefi %</label><input id="tp" class="input" type="number" step="0.1"></div>
-          <div style="grid-column:span 3"><label class="label">Stop Loss %</label><input id="sl" class="input" type="number" step="0.1"></div>
-          <div style="grid-column:span 6"><label class="label">Tarama Aralığı sn</label><input id="scanint" class="input" type="number" min="5"></div>
-          <div style="grid-column:span 6"><label class="label">Coin başı bekleme sn</label><input id="delay" class="input" type="number" step="0.05"></div>
+        <div class="quick">
+          <div class="half"><label class="label">Yön</label><select id="direction"><option value="both">LONG + SHORT</option><option value="long">Sadece LONG</option><option value="short">Sadece SHORT</option></select></div>
+          <div class="half"><label class="label">Max Açık Poz.</label><input id="maxpos" class="input" type="number" min="1" max="50"></div>
+          <div class="half"><label class="label">İşlem Başı USDT</label><input id="tradeSize" class="input" type="number" min="1" step="1"></div>
+          <div class="half"><label class="label">Kaldıraç</label><input id="lev" class="input" type="number" min="1" max="125"></div>
+          <div class="half"><label class="label">TP1 %</label><input id="tp1" class="input" type="number" step="0.1"></div>
+          <div class="half"><label class="label">TP2 %</label><input id="tp2" class="input" type="number" step="0.1"></div>
+          <div class="half"><label class="label">SL %</label><input id="sl" class="input" type="number" step="0.1"></div>
+          <div class="half"><label class="label">Min AI Score</label><input id="score" class="input" type="number" min="1" max="100"></div>
+          <div class="half"><label class="label">Risk / İşlem %</label><input id="risk" class="input" type="number" step="0.1"></div>
+          <div class="half"><label class="label">Günlük Max Zarar %</label><input id="maxloss" class="input" type="number" step="0.1"></div>
+          <div class="half"><label class="label">Tarama Aralığı sn</label><input id="scanint" class="input" type="number" min="5"></div>
+          <div class="half"><label class="label">Coin bekleme sn</label><input id="delay" class="input" type="number" step="0.05"></div>
         </div><br>
-        <label class="label">Taranacak Coinler — virgül veya satır ile ayır</label>
-        <textarea id="symbols"></textarea><br><br>
-        <button class="btn green" onclick="saveConfig()">Ayarları Kaydet</button>
+        <div class="row"><button class="btn green" onclick="saveConfig()">Ayarları Kaydet</button><button id="startBtn" class="btn green" onclick="startBot()">Başlat</button><button id="stopBtn" class="btn red" onclick="stopBot()">Durdur</button></div>
+        <p class="dangerNote">Canlı emir için Cloud Run ortam değişkeni TRADING_MODE=live olmalı. Şu an paper mod güvenlidir.</p>
       </div>
 
-      <div class="card full">
-        <h3>Açık Pozisyonlar</h3>
-        <table><thead><tr><th>Coin</th><th>Yön</th><th>AI</th><th>Entry</th><th>SL</th><th>TP</th><th>Margin</th><th>Notional</th><th>Qty</th><th>Saat</th><th>İşlem</th></tr></thead><tbody id="positions"></tbody></table>
-      </div>
-
-      <div class="card wide"><h3>Son Sinyaller</h3><table><thead><tr><th>Coin</th><th>Yön</th><th>AI</th><th>Fiyat</th><th>Funding</th><th>OI</th></tr></thead><tbody id="signals"></tbody></table></div>
-      <div class="card side"><h3>Loglar</h3><div id="logs" class="log"></div></div>
+      <div class="card wide"><h3>Son Sinyaller</h3><div class="tableWrap"><table><thead><tr><th>Coin</th><th>Yön</th><th>AI</th><th>Fiyat</th><th>Funding</th><th>OI</th></tr></thead><tbody id="signals"></tbody></table></div></div>
+      <div class="card side"><div class="topline"><h3>Loglar</h3><select id="logFilter" style="width:120px"><option>Tümü</option></select></div><div id="logs" class="log"></div></div>
     </div>
+    <div class="footer"><span>● Sistem Durumu: <b id="sys" class="greenTxt">-</b></span><span>● Veri Kaynağı: <b class="greenTxt">Binance Futures</b></span><span>Sunucu Saati: <span id="clock">-</span></span><span>Versiyon: 2.1.0</span></div>
   </div>
 </div>
 <script>
 let token = localStorage.getItem('meric_token') || '';
+let allSymbols = [];
+let selectedSymbols = new Set();
+let lastStatus = null;
 const api = async (path, opts={}) => {
   opts.headers = Object.assign({'Content-Type':'application/json'}, opts.headers||{});
   if(token) opts.headers.Authorization = 'Bearer ' + token;
@@ -90,36 +102,62 @@ const api = async (path, opts={}) => {
   if(!r.ok) throw new Error(data.detail || data.message || 'İstek hatası');
   return data;
 };
+function coinLabel(s){return s.replace('USDT','')}
+function fmt(v,d=4){if(v===null||v===undefined||v==='')return '-'; const n=Number(v); return Number.isFinite(n)?n.toLocaleString('en-US',{maximumFractionDigits:d}):v}
+function cls(v){return Number(v)>=0?'greenTxt':'redTxt'}
 async function login(){
   const fd = new URLSearchParams(); fd.append('username', u.value); fd.append('password', p.value); fd.append('grant_type','password');
   try{const r = await fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:fd}); const d=await r.json(); if(!r.ok) throw new Error(d.detail||'Giriş hatalı'); token=d.access_token; localStorage.setItem('meric_token',token); showDash();}
   catch(e){loginErr.textContent=e.message}
 }
 function logout(){localStorage.removeItem('meric_token'); token=''; loginBox.classList.remove('hidden'); dash.classList.add('hidden')}
-function showDash(){loginBox.classList.add('hidden'); dash.classList.remove('hidden'); refresh(); setInterval(refresh,4000)}
-function fmt(v){return (v===null||v===undefined)?'-':v}
-function cls(v){return Number(v)>=0?'greenTxt':'redTxt'}
+async function showDash(){loginBox.classList.add('hidden'); dash.classList.remove('hidden'); await loadSymbols(); await refresh(); setInterval(refresh,4000); setInterval(()=>clock.textContent=new Date().toLocaleString('tr-TR'),1000)}
+async function loadSymbols(){try{const d=await api('/api/futures-symbols'); allSymbols=d.symbols||[]; selectedSymbols=new Set(d.selected||[]); renderCoinList();}catch(e){console.warn(e)}}
+function renderCoinList(){
+  const q=(coinSearch.value||'').toUpperCase();
+  const list=allSymbols.filter(s=>!q || s.includes(q)).slice(0,350);
+  coinList.innerHTML=list.map(s=>`<div class="coinItem"><div><span class="coinIcon">${coinLabel(s)[0]||'C'}</span><span class="coinName">${s}</span><div class="coinSub">${coinLabel(s)}</div></div><label class="switch"><input type="checkbox" ${selectedSymbols.has(s)?'checked':''} onchange="toggleCoin('${s}',this.checked)"><span class="slider"></span></label></div>`).join('');
+  selectedCount.textContent=selectedSymbols.size; allCount.textContent=allSymbols.length;
+}
+function toggleCoin(s,on){if(on) selectedSymbols.add(s); else selectedSymbols.delete(s); selectedCount.textContent=selectedSymbols.size; renderMarket();}
+function selectAllCoins(){allSymbols.forEach(s=>selectedSymbols.add(s)); renderCoinList(); renderMarket()}
+function clearAllCoins(){selectedSymbols.clear(); renderCoinList(); renderMarket()}
+async function saveSelectedCoins(){await api('/api/symbols',{method:'POST',body:JSON.stringify({symbols:[...selectedSymbols]})}); alert('Coin seçimleri kaydedildi'); refresh()}
 async function refresh(){
   if(!token) return;
   try{
-    const d=await api('/api/status');
-    mode.textContent='Mod: '+d.mode; modeCard.textContent=d.mode; run.textContent=d.running?'ÇALIŞIYOR':'DURDU'; run.style.color=d.running?'#19c37d':'#ff4d4f';
-    pnl.textContent=(d.daily_pnl||0).toFixed?d.daily_pnl.toFixed(2):d.daily_pnl; pnl.className='value '+cls(d.daily_pnl||0);
-    balance.textContent=(Number(d.binance_balance||0)).toFixed(2)+' USDT'; trades.textContent=d.daily_trades||0; winrate.textContent=(d.win_rate||0)+'%'; lastscan.textContent=d.last_scan||'-';
-    const c=d.config||{}; direction.value=c.direction||'both'; lev.value=c.default_leverage||5; tradeSize.value=c.trade_size_usdt||50; tradeSizeTop.textContent=(c.trade_size_usdt||50)+' USDT'; levTop.textContent=(c.default_leverage||5)+'x'; score.value=c.min_ai_score||72; maxpos.value=c.max_open_positions||3; risk.value=c.risk_per_trade_pct||1; maxloss.value=c.max_daily_loss_pct||3; tp.value=c.profit_target_pct||1.5; sl.value=c.stop_loss_pct||1.2; scanint.value=c.scan_interval_sec||20; delay.value=c.per_symbol_delay_sec||0.25; symbols.value=(c.symbols||[]).join('\n');
-    positions.innerHTML=(d.open_positions||[]).map(x=>`<tr><td>${x.symbol}</td><td><span class="badge ${x.direction==='LONG'?'long':'short'}">${x.direction}</span></td><td>${x.score}</td><td>${fmt(x.price)}</td><td>${fmt(x.sl)}</td><td>${fmt(x.tp)}</td><td>${fmt(x.trade_size_usdt)} USDT</td><td>${fmt(x.notional_usdt)} USDT</td><td>${fmt(x.qty)}</td><td>${fmt(x.opened_at)}</td><td><button class="btn red" onclick="closePos('${x.symbol}')">Kapat</button></td></tr>`).join('') || '<tr><td colspan="11" class="muted">Açık pozisyon yok</td></tr>';
-    signals.innerHTML=(d.signals||[]).slice(0,30).map(x=>`<tr><td>${x.symbol}</td><td><span class="badge ${x.direction==='LONG'?'long':x.direction==='SHORT'?'short':''}">${x.direction}</span></td><td>${x.score}</td><td>${fmt(x.price)}</td><td>${fmt(x.funding_rate)}</td><td>${fmt(x.open_interest)}</td></tr>`).join('') || '<tr><td colspan="6" class="muted">Sinyal yok</td></tr>';
-    logs.innerHTML=(d.log||[]).map(l=>`<div class="logitem"><b class="${l.level==='SUCCESS'?'greenTxt':l.level==='WARN'?'yellowTxt':l.level==='ERROR'?'redTxt':''}">${l.level}</b> <span class="muted">${l.time}</span><br>${l.msg}</div>`).join('');
+    const d=await api('/api/status'); lastStatus=d;
+    run.textContent=d.running?'● Bot Aktif':'● Bot Durdu'; run.className='pill '+(d.running?'green':''); sys.textContent=d.running?'Çalışıyor':'Durdu';
+    pnl.textContent=(Number(d.daily_pnl||0)).toFixed(2)+' USDT'; pnl.className='value '+cls(d.daily_pnl||0);
+    balance.textContent=fmt(d.binance_balance,2)+' USDT'; availableBal.textContent=fmt(d.binance_balance,2)+' USDT'; totalBal.textContent=fmt(d.binance_balance,2)+' USDT';
+    winrate.textContent=(d.win_rate||0)+'%'; wl.textContent=`Kazanan: ${d.daily_wins||0} / Kaybeden: ${d.daily_losses||0}`;
+    const c=d.config||{}; direction.value=c.direction||'both'; maxpos.value=c.max_open_positions||3; tradeSize.value=c.trade_size_usdt||50; lev.value=c.default_leverage||5; tp1.value=c.tp1_pct||c.profit_target_pct||2; tp2.value=c.tp2_pct||4; sl.value=c.stop_loss_pct||1; score.value=c.min_ai_score||72; risk.value=c.risk_per_trade_pct||1; maxloss.value=c.max_daily_loss_pct||3; scanint.value=c.scan_interval_sec||20; delay.value=c.per_symbol_delay_sec||0.25;
+    tradeSizeRange.value=Math.min(500, Math.max(10, Number(tradeSize.value))); levRange.value=lev.value; tpRange.value=tp1.value; slRange.value=sl.value;
+    tradeSizeTop.textContent=tradeSize.value+' USDT'; levTop.textContent=lev.value+'x'; tpTop.textContent=tp1.value+'%'; slTop.textContent=sl.value+'%';
+    selectedSymbols=new Set(c.symbols||[...selectedSymbols]); renderCoinList(); renderPositions(d.open_positions||[]); renderSignals(d.signals||[]); renderMarket(); renderLogs(d.log||[]);
   }catch(e){console.warn(e)}
 }
-async function startBot(){await api('/api/start',{method:'POST'}); refresh()}
+function renderPositions(list){
+  positions.innerHTML=list.map((x,i)=>`<tr><td>${i+1}</td><td><span class="coinIcon">${coinLabel(x.symbol)[0]||'C'}</span>${x.symbol}</td><td><span class="badge ${x.direction==='LONG'?'long':'short'}">${x.direction}</span></td><td>${fmt(x.qty,6)} ${coinLabel(x.symbol)}</td><td>${fmt(x.entry||x.price,6)}</td><td>${fmt(x.current_price,6)}</td><td>${fmt(x.sl,6)}</td><td>${fmt(x.tp1||x.tp,6)}</td><td>${fmt(x.tp2,6)}</td><td>${fmt(x.trade_size_usdt||x.margin_usdt,2)} USDT</td><td class="${cls(x.pnl_usdt||0)}">${fmt(x.pnl_usdt,4)}</td><td class="${cls(x.pnl_pct||0)}">${fmt(x.pnl_pct,2)}%</td><td>${x.opened_at||'-'}</td><td><button class="btn red small" onclick="closePos('${x.symbol}')">Kapat</button></td></tr>`).join('') || '<tr><td colspan="14" class="muted">Açık pozisyon yok</td></tr>';
+}
+function renderSignals(list){
+  signals.innerHTML=list.slice(0,30).map(x=>`<tr><td>${x.symbol}</td><td><span class="badge ${x.direction==='LONG'?'long':x.direction==='SHORT'?'short':'neutral'}">${x.direction}</span></td><td>${x.score}</td><td>${fmt(x.price,6)}</td><td>${fmt(x.funding||x.funding_rate,6)}</td><td>${fmt(x.open_interest,2)}</td></tr>`).join('') || '<tr><td colspan="6" class="muted">Sinyal yok</td></tr>';
+}
+function renderMarket(){
+  const d=lastStatus||{}; const q=(marketSearch?.value||'').toUpperCase();
+  const map=new Map((d.market||[]).map(m=>[m.symbol,m]));
+  const signalMap=new Map((d.signals||[]).map(s=>[s.symbol,s]));
+  const base=(allSymbols.length?allSymbols:[...selectedSymbols]);
+  const rows=base.filter(s=>!q||s.includes(q)).slice(0,120).map((s,i)=>{const m=map.get(s)||{}; const sg=signalMap.get(s)||{}; const dir=m.direction||sg.direction||'-'; const sc=m.score||sg.score||'-'; const ch=Number(m.change24||0); return `<tr><td>${i+1}</td><td><span class="coinIcon">${coinLabel(s)[0]||'C'}</span><b>${s}</b><div class="coinSub">${coinLabel(s)}</div></td><td>${fmt(m.price||sg.price,6)}</td><td class="${cls(ch)}">${fmt(ch,2)}%</td><td>${fmt(m.volume24,2)}</td><td><span class="badge ${dir==='LONG'?'long':dir==='SHORT'?'short':'neutral'}">${dir}</span></td><td class="${Number(sc)>=80?'greenTxt':Number(sc)>=60?'yellowTxt':'redTxt'}">${sc}</td><td><label class="switch"><input type="checkbox" ${selectedSymbols.has(s)?'checked':''} onchange="toggleCoin('${s}',this.checked)"><span class="slider"></span></label></td></tr>`}).join('');
+  market.innerHTML=rows || '<tr><td colspan="8" class="muted">Coin yok</td></tr>';
+}
+function renderLogs(list){logs.innerHTML=list.map(l=>`<div class="logitem"><b class="${l.level==='SUCCESS'?'greenTxt':l.level==='WARN'?'yellowTxt':l.level==='ERROR'?'redTxt':''}">${l.level}</b> <span class="muted">${l.time}</span><br>${l.msg}</div>`).join('')}
+async function startBot(){await saveConfig(false); await api('/api/start',{method:'POST'}); refresh()}
 async function stopBot(){await api('/api/stop',{method:'POST'}); refresh()}
-async function resetPaper(){if(confirm('Paper verileri sıfırlansın mı?')){await api('/api/reset-paper',{method:'POST'}); refresh()}}
 async function closePos(s){if(confirm(s+' kapatılsın mı?')){await api('/api/close/'+s,{method:'POST'}); refresh()}}
-async function saveConfig(){
-  const list=symbols.value.split(/[\n,\s]+/).map(x=>x.trim().toUpperCase()).filter(Boolean);
-  await api('/api/config',{method:'POST',body:JSON.stringify({symbols:list,direction:direction.value,default_leverage:Number(lev.value),trade_size_usdt:Number(tradeSize.value),min_ai_score:Number(score.value),max_open_positions:Number(maxpos.value),risk_per_trade_pct:Number(risk.value),max_daily_loss_pct:Number(maxloss.value),profit_target_pct:Number(tp.value),stop_loss_pct:Number(sl.value),scan_interval_sec:Number(scanint.value),per_symbol_delay_sec:Number(delay.value)})});
-  alert('Ayarlar kaydedildi'); refresh();
+async function saveConfig(showAlert=true){
+  const body={symbols:[...selectedSymbols],direction:direction.value,default_leverage:Number(lev.value),trade_size_usdt:Number(tradeSize.value),tp1_pct:Number(tp1.value),tp2_pct:Number(tp2.value),profit_target_pct:Number(tp1.value),stop_loss_pct:Number(sl.value),min_ai_score:Number(score.value),max_open_positions:Number(maxpos.value),risk_per_trade_pct:Number(risk.value),max_daily_loss_pct:Number(maxloss.value),scan_interval_sec:Number(scanint.value),per_symbol_delay_sec:Number(delay.value)};
+  await api('/api/config',{method:'POST',body:JSON.stringify(body)}); if(showAlert) alert('Ayarlar kaydedildi'); refresh();
 }
 if(token) showDash();
 </script>

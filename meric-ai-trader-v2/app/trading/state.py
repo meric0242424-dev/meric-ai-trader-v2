@@ -8,6 +8,8 @@ class BotState:
         self.logs = []
         self.last_scan = None
         self.signals = []
+        self.market = []
+        self.futures_symbols_cache = []
         self.daily_pnl = 0.0
         self.daily_trades = 0
         self.daily_wins = 0
@@ -23,7 +25,9 @@ class BotState:
             "min_ai_score": settings.min_ai_score,
             "max_daily_loss_pct": settings.max_daily_loss_pct,
             "profit_target_pct": 1.5,
-            "stop_loss_pct": 1.2,
+            "tp1_pct": 2.0,
+            "tp2_pct": 4.0,
+            "stop_loss_pct": 1.0,
             "scan_interval_sec": 20,
             "per_symbol_delay_sec": 0.25,
         }
