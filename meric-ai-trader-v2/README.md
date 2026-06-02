@@ -24,3 +24,22 @@ Panel/API: `http://localhost:8080/docs`
 
 ## Önemli
 Bu proje kâr garantisi vermez. Canlı kullanımdan önce minimum 2-4 hafta paper trading ve backtest yap.
+
+## v2.1 Web Panel
+Bu sürümde `/` adresi artık JSON değil, görsel yönetim panelidir.
+
+Panel özellikleri:
+- Login ekranı
+- Bot başlat / durdur
+- Taranacak coin listesi
+- Yön filtresi: both / long / short
+- Kaldıraç
+- Min AI score
+- Risk / işlem yüzdesi
+- Max açık pozisyon
+- Günlük max zarar
+- Açık pozisyon tablosu
+- Son sinyaller
+- Log paneli
+
+Hızlı giriş için deploy sırasında `BOT_PASSWORD` verilebilir. Production için bcrypt `BOT_PASS_HASH` önerilir.

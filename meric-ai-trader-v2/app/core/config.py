@@ -6,6 +6,7 @@ class Settings(BaseSettings):
     secret_key: str = "CHANGE_ME"
     bot_user: str = "meric"
     bot_pass_hash: str = ""
+    bot_password: str = ""  # optional plain password for quick deploy; prefer BOT_PASS_HASH in production
     binance_api_key: str = ""
     binance_api_secret: str = ""
     binance_base: str = "https://fapi.binance.com"

@@ -11,12 +11,16 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/login")
 
 def verify_password(plain: str, hashed: str) -> bool:
-    if not hashed:
-        return False
-    try:
-        return pwd_context.verify(plain, hashed)
-    except Exception:
-        return False
+    # Production: BOT_PASS_HASH bcrypt kullan. Hızlı deploy için BOT_PASSWORD plain fallback desteklenir.
+    if hashed:
+        try:
+            if pwd_context.verify(plain, hashed):
+                return True
+        except Exception:
+            pass
+    if settings.bot_password:
+        return plain == settings.bot_password
+    return False
 
 def create_token(username: str) -> str:
     return jwt.encode({"sub": username, "exp": time.time() + TOKEN_EXPIRE_MIN * 60}, settings.secret_key, algorithm=ALGORITHM)
