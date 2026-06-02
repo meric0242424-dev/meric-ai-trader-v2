@@ -13,6 +13,7 @@ class RiskManager:
         self.consecutive_losses = 0
         self.max_open_positions_override = None
         self.risk_per_trade_pct_override = None
+        self.trade_size_usdt_override = None
         self.max_daily_loss_pct_override = None
 
     def _risk_pct(self):
@@ -25,12 +26,20 @@ class RiskManager:
         return int(self.max_open_positions_override or settings.max_open_positions)
 
     def calculate_qty(self, balance: float, entry: float, sl: float, leverage: int) -> float:
-        risk_usdt = balance * self._risk_pct() / 100
-        loss_per_unit = abs(entry - sl)
-        if loss_per_unit <= 0: return 0
-        qty = risk_usdt / loss_per_unit
-        max_notional_qty = (balance * leverage * 0.95) / entry
-        qty = min(qty, max_notional_qty)
+        # Öncelik: panelden seçilen işlem başı USDT limiti.
+        # Bu değer margin tutarıdır; gerçek pozisyon büyüklüğü trade_size_usdt * leverage olur.
+        fixed_trade_size = self.trade_size_usdt_override
+        if fixed_trade_size is not None and fixed_trade_size > 0:
+            if fixed_trade_size > balance:
+                return 0
+            qty = (fixed_trade_size * leverage) / entry
+        else:
+            risk_usdt = balance * self._risk_pct() / 100
+            loss_per_unit = abs(entry - sl)
+            if loss_per_unit <= 0: return 0
+            qty = risk_usdt / loss_per_unit
+            max_notional_qty = (balance * leverage * 0.95) / entry
+            qty = min(qty, max_notional_qty)
         if entry >= 1000: return round(qty, 3)
         if entry >= 100: return round(qty, 2)
         if entry >= 1: return round(qty, 1)
@@ -46,6 +55,8 @@ class RiskManager:
             return RiskDecision(False, "Ardışık zarar limiti")
         if open_count >= self._max_open_positions():
             return RiskDecision(False, "Max açık pozisyon")
+        if self.trade_size_usdt_override is not None and self.trade_size_usdt_override > balance:
+            return RiskDecision(False, f"İşlem limiti bakiyeden büyük: {self.trade_size_usdt_override:.2f} > {balance:.2f} USDT")
         qty = self.calculate_qty(balance, entry, sl, leverage)
         if qty <= 0:
             return RiskDecision(False, "Miktar hesaplanamadı")

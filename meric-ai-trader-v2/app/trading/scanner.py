@@ -62,7 +62,7 @@ class ScannerService:
             state.log(f"Risk reddi {symbol}: {rd.reason}", "WARN")
             return
         order=await self.executor.open(symbol, sig["direction"], rd.qty, leverage)
-        state.open_positions[symbol]={**sig,"qty":rd.qty,"order":order,"opened_at":datetime.datetime.now().strftime("%H:%M:%S"),"leverage":leverage}
+        state.open_positions[symbol]={**sig,"qty":rd.qty,"trade_size_usdt":state.config.get("trade_size_usdt",50.0),"notional_usdt":round(rd.qty*sig["price"],4),"order":order,"opened_at":datetime.datetime.now().strftime("%H:%M:%S"),"leverage":leverage}
         state.daily_trades += 1
         msg=f"{sig['direction']} {symbol} | AI:{sig['score']} | Entry:{sig['price']} SL:{sig['sl']} TP:{sig['tp']} Qty:{rd.qty}"
         state.log(msg, "SUCCESS")
@@ -72,6 +72,7 @@ class ScannerService:
         while state.running:
             state.reset_daily_if_needed()
             self.risk.max_open_positions_override = state.config.get("max_open_positions")
+            self.risk.trade_size_usdt_override = state.config.get("trade_size_usdt")
             self.risk.risk_per_trade_pct_override = state.config.get("risk_per_trade_pct")
             self.risk.max_daily_loss_pct_override = state.config.get("max_daily_loss_pct")
             for sym in list(state.config.get("symbols", self.symbols)):

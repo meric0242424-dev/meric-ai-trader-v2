@@ -33,10 +33,14 @@
     </div>
 
     <div class="grid">
+      <div class="card stat"><div class="label">Binance USDT</div><div id="balance" class="value">-</div></div>
+      <div class="card stat"><div class="label">Trade Size</div><div id="tradeSizeTop" class="value">-</div></div>
+      <div class="card stat"><div class="label">Kaldıraç</div><div id="levTop" class="value">-</div></div>
       <div class="card stat"><div class="label">Günlük PnL</div><div id="pnl" class="value">0</div></div>
-      <div class="card stat"><div class="label">İşlem Sayısı</div><div id="trades" class="value">0</div></div>
       <div class="card stat"><div class="label">Win Rate</div><div id="winrate" class="value">0%</div></div>
+      <div class="card stat"><div class="label">İşlem Sayısı</div><div id="trades" class="value">0</div></div>
       <div class="card stat"><div class="label">Son Tarama</div><div id="lastscan" class="value">-</div></div>
+      <div class="card stat"><div class="label">Mod</div><div id="modeCard" class="value">-</div></div>
 
       <div class="card side">
         <h3>Kontrol</h3>
@@ -50,6 +54,7 @@
         <div class="grid" style="grid-template-columns:repeat(12,1fr)">
           <div style="grid-column:span 3"><label class="label">Yön</label><select id="direction"><option value="both">LONG + SHORT</option><option value="long">Sadece LONG</option><option value="short">Sadece SHORT</option></select></div>
           <div style="grid-column:span 3"><label class="label">Kaldıraç</label><input id="lev" class="input" type="number" min="1" max="125"></div>
+          <div style="grid-column:span 3"><label class="label">İşlem Başı USDT</label><input id="tradeSize" class="input" type="number" min="1" step="1"></div>
           <div style="grid-column:span 3"><label class="label">Min AI Score</label><input id="score" class="input" type="number" min="1" max="100"></div>
           <div style="grid-column:span 3"><label class="label">Max Açık Poz.</label><input id="maxpos" class="input" type="number" min="1" max="50"></div>
           <div style="grid-column:span 3"><label class="label">Risk / İşlem %</label><input id="risk" class="input" type="number" step="0.1"></div>
@@ -66,7 +71,7 @@
 
       <div class="card full">
         <h3>Açık Pozisyonlar</h3>
-        <table><thead><tr><th>Coin</th><th>Yön</th><th>AI</th><th>Entry</th><th>SL</th><th>TP</th><th>Qty</th><th>Saat</th><th>İşlem</th></tr></thead><tbody id="positions"></tbody></table>
+        <table><thead><tr><th>Coin</th><th>Yön</th><th>AI</th><th>Entry</th><th>SL</th><th>TP</th><th>Margin</th><th>Notional</th><th>Qty</th><th>Saat</th><th>İşlem</th></tr></thead><tbody id="positions"></tbody></table>
       </div>
 
       <div class="card wide"><h3>Son Sinyaller</h3><table><thead><tr><th>Coin</th><th>Yön</th><th>AI</th><th>Fiyat</th><th>Funding</th><th>OI</th></tr></thead><tbody id="signals"></tbody></table></div>
@@ -98,11 +103,11 @@ async function refresh(){
   if(!token) return;
   try{
     const d=await api('/api/status');
-    mode.textContent='Mod: '+d.mode; run.textContent=d.running?'ÇALIŞIYOR':'DURDU'; run.style.color=d.running?'#19c37d':'#ff4d4f';
+    mode.textContent='Mod: '+d.mode; modeCard.textContent=d.mode; run.textContent=d.running?'ÇALIŞIYOR':'DURDU'; run.style.color=d.running?'#19c37d':'#ff4d4f';
     pnl.textContent=(d.daily_pnl||0).toFixed?d.daily_pnl.toFixed(2):d.daily_pnl; pnl.className='value '+cls(d.daily_pnl||0);
-    trades.textContent=d.daily_trades||0; winrate.textContent=(d.win_rate||0)+'%'; lastscan.textContent=d.last_scan||'-';
-    const c=d.config||{}; direction.value=c.direction||'both'; lev.value=c.default_leverage||5; score.value=c.min_ai_score||72; maxpos.value=c.max_open_positions||3; risk.value=c.risk_per_trade_pct||1; maxloss.value=c.max_daily_loss_pct||3; tp.value=c.profit_target_pct||1.5; sl.value=c.stop_loss_pct||1.2; scanint.value=c.scan_interval_sec||20; delay.value=c.per_symbol_delay_sec||0.25; symbols.value=(c.symbols||[]).join('\n');
-    positions.innerHTML=(d.open_positions||[]).map(x=>`<tr><td>${x.symbol}</td><td><span class="badge ${x.direction==='LONG'?'long':'short'}">${x.direction}</span></td><td>${x.score}</td><td>${fmt(x.price)}</td><td>${fmt(x.sl)}</td><td>${fmt(x.tp)}</td><td>${fmt(x.qty)}</td><td>${fmt(x.opened_at)}</td><td><button class="btn red" onclick="closePos('${x.symbol}')">Kapat</button></td></tr>`).join('') || '<tr><td colspan="9" class="muted">Açık pozisyon yok</td></tr>';
+    balance.textContent=(Number(d.binance_balance||0)).toFixed(2)+' USDT'; trades.textContent=d.daily_trades||0; winrate.textContent=(d.win_rate||0)+'%'; lastscan.textContent=d.last_scan||'-';
+    const c=d.config||{}; direction.value=c.direction||'both'; lev.value=c.default_leverage||5; tradeSize.value=c.trade_size_usdt||50; tradeSizeTop.textContent=(c.trade_size_usdt||50)+' USDT'; levTop.textContent=(c.default_leverage||5)+'x'; score.value=c.min_ai_score||72; maxpos.value=c.max_open_positions||3; risk.value=c.risk_per_trade_pct||1; maxloss.value=c.max_daily_loss_pct||3; tp.value=c.profit_target_pct||1.5; sl.value=c.stop_loss_pct||1.2; scanint.value=c.scan_interval_sec||20; delay.value=c.per_symbol_delay_sec||0.25; symbols.value=(c.symbols||[]).join('\n');
+    positions.innerHTML=(d.open_positions||[]).map(x=>`<tr><td>${x.symbol}</td><td><span class="badge ${x.direction==='LONG'?'long':'short'}">${x.direction}</span></td><td>${x.score}</td><td>${fmt(x.price)}</td><td>${fmt(x.sl)}</td><td>${fmt(x.tp)}</td><td>${fmt(x.trade_size_usdt)} USDT</td><td>${fmt(x.notional_usdt)} USDT</td><td>${fmt(x.qty)}</td><td>${fmt(x.opened_at)}</td><td><button class="btn red" onclick="closePos('${x.symbol}')">Kapat</button></td></tr>`).join('') || '<tr><td colspan="11" class="muted">Açık pozisyon yok</td></tr>';
     signals.innerHTML=(d.signals||[]).slice(0,30).map(x=>`<tr><td>${x.symbol}</td><td><span class="badge ${x.direction==='LONG'?'long':x.direction==='SHORT'?'short':''}">${x.direction}</span></td><td>${x.score}</td><td>${fmt(x.price)}</td><td>${fmt(x.funding_rate)}</td><td>${fmt(x.open_interest)}</td></tr>`).join('') || '<tr><td colspan="6" class="muted">Sinyal yok</td></tr>';
     logs.innerHTML=(d.log||[]).map(l=>`<div class="logitem"><b class="${l.level==='SUCCESS'?'greenTxt':l.level==='WARN'?'yellowTxt':l.level==='ERROR'?'redTxt':''}">${l.level}</b> <span class="muted">${l.time}</span><br>${l.msg}</div>`).join('');
   }catch(e){console.warn(e)}
@@ -113,7 +118,7 @@ async function resetPaper(){if(confirm('Paper verileri sıfırlansın mı?')){aw
 async function closePos(s){if(confirm(s+' kapatılsın mı?')){await api('/api/close/'+s,{method:'POST'}); refresh()}}
 async function saveConfig(){
   const list=symbols.value.split(/[\n,\s]+/).map(x=>x.trim().toUpperCase()).filter(Boolean);
-  await api('/api/config',{method:'POST',body:JSON.stringify({symbols:list,direction:direction.value,default_leverage:Number(lev.value),min_ai_score:Number(score.value),max_open_positions:Number(maxpos.value),risk_per_trade_pct:Number(risk.value),max_daily_loss_pct:Number(maxloss.value),profit_target_pct:Number(tp.value),stop_loss_pct:Number(sl.value),scan_interval_sec:Number(scanint.value),per_symbol_delay_sec:Number(delay.value)})});
+  await api('/api/config',{method:'POST',body:JSON.stringify({symbols:list,direction:direction.value,default_leverage:Number(lev.value),trade_size_usdt:Number(tradeSize.value),min_ai_score:Number(score.value),max_open_positions:Number(maxpos.value),risk_per_trade_pct:Number(risk.value),max_daily_loss_pct:Number(maxloss.value),profit_target_pct:Number(tp.value),stop_loss_pct:Number(sl.value),scan_interval_sec:Number(scanint.value),per_symbol_delay_sec:Number(delay.value)})});
   alert('Ayarlar kaydedildi'); refresh();
 }
 if(token) showDash();

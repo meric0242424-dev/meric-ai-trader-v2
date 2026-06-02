@@ -16,7 +16,15 @@ async def login(form: OAuth2PasswordRequestForm = Depends()):
 
 @router.get("/status")
 async def status(user=Depends(get_current_user)):
+    try:
+        binance_balance = await scanner.client.account_balance()
+        balance_error = None
+    except Exception as e:
+        binance_balance = 1000.0 if settings.trading_mode != "live" else 0.0
+        balance_error = str(e)[:160]
     return {
+        "binance_balance": binance_balance,
+        "balance_error": balance_error,
         "running": state.running,
         "mode": settings.trading_mode,
         "last_scan": state.last_scan,
@@ -45,6 +53,7 @@ class BotConfigIn(BaseModel):
     symbols: list[str] | None = None
     direction: str | None = Field(None, pattern="^(both|long|short)$")
     default_leverage: int | None = Field(None, ge=1, le=125)
+    trade_size_usdt: float | None = Field(None, ge=1, le=1000000)
     risk_per_trade_pct: float | None = Field(None, ge=0.05, le=10)
     max_open_positions: int | None = Field(None, ge=1, le=50)
     min_ai_score: int | None = Field(None, ge=1, le=100)

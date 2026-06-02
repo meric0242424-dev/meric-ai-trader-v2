@@ -17,6 +17,7 @@ class BotState:
             "symbols": ["BTCUSDT","ETHUSDT","SOLUSDT","BNBUSDT","XRPUSDT","ADAUSDT","DOGEUSDT","LINKUSDT","AVAXUSDT","LTCUSDT"],
             "direction": "both",
             "default_leverage": settings.default_leverage,
+            "trade_size_usdt": 50.0,
             "risk_per_trade_pct": settings.risk_per_trade_pct,
             "max_open_positions": settings.max_open_positions,
             "min_ai_score": settings.min_ai_score,
